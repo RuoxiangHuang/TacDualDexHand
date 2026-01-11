@@ -1,24 +1,5 @@
-#
-
-[![IsaacSim](https://img.shields.io/badge/IsaacSim-4.5.0-silver.svg)](https://docs.omniverse.nvidia.com/isaacsim/latest/overview.html)
-[![Isaac Lab](https://img.shields.io/badge/IsaacLab-2.1.1-silver)](https://isaac-sim.github.io/IsaacLab)
-[![Python](https://img.shields.io/badge/python-3.10-blue.svg)](https://docs.python.org/3/whatsnew/3.10.html)
-[![Linux platform](https://img.shields.io/badge/platform-linux--64-orange.svg)](https://releases.ubuntu.com/22.04/)
-<!-- [![Windows platform](https://img.shields.io/badge/platform-windows--64-orange.svg)](https://www.microsoft.com/en-us/) -->
-[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://pre-commit.com/)
-[![License](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/license/mit)
-
-**Keywords:** tactile sensing, gelsight, isaaclab, vision-based-tactile-sensor, vbts, reinforcement learning
-
-> [!note]
-> **Preview Release**:
->
-> The framework is under active development and currently in its beta phase.
-> If you encounter bugs or have suggestions on how the framework can be improved, please tell us about them (e.g. via [Issues](https://github.com/DH-Ng/TacEx/issues)/[Discussions](https://github.com/DH-Ng/TacEx/discussions)).
-
-
-# TacEx - Tactile Extension for Isaac Sim/Isaac Lab
-**TacEx** brings **Vision-Based Tactile Sensor (VBTS)** into Isaac Sim/Lab.
+# TacDualDexHand - Tactile Extension for Isaac Sim/Isaac Lab
+**TacDualDexHand** brings **Vision-Based Tactile Sensor (VBTS)** into Isaac Sim/Lab for dual dexterous hands.
 
 The framework integrates multiple simulation approaches for VBTS's and aims to be modular and extendable.
 Components can be easily switched out, added and modified.
@@ -49,11 +30,11 @@ git lfs install
 
 **1.** Clone this repository and its submodules:
 ```bash
-git clone --recurse-submodules https://github.com/DH-Ng/TacEx
-cd TacEx
+git clone --recurse-submodules https://github.com/RuoxiangHuang/TacDualDexHand
+cd TacDualDexHand
 ```
 
-Then **install TacEx** [locally](docs/source/installation/Local-Installation.md)
+Then **install TacDualDexHand** [locally](docs/source/installation/Local-Installation.md)
 or build a [Docker Container](docs/source/installation/Docker-Container-Setup.md).
 
 
