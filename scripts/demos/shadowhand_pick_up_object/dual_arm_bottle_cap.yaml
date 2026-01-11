@@ -416,7 +416,7 @@ env_camera:
     - 2.0
 assets:
   ground_plate:
-    usd_path: /home/user/BiDexViTac/TacEx/source/tacex_assets/tacex_assets/data/Props/plate.usd
+    usd_path: /root/IsaacLab/TacDualDexHand/source/tacex_assets/tacex_assets/data/Props/plate.usd
     pos:
     - 1.0
     - 0.0
@@ -426,7 +426,7 @@ assets:
     - 0.2
     - 2.0
   object:
-    usd_path: /home/user/BiDexViTac/TacEx/source/tacex_assets/tacex_assets/data/Bottle/3517/mobility.usd
+    usd_path: /root/IsaacLab/TacDualDexHand/source/tacex_assets/tacex_assets/data/Bottle/3517/mobility.usd
     pos:
     - 1.0
     - 0.0

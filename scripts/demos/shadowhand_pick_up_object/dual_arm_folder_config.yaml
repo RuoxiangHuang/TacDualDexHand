@@ -305,7 +305,7 @@ env_camera:
     - 0.1
     - 2.0
 folder:
-  usd_path: /home/user/BiDexViTac/TacEx/source/tacex_tasks/tacex_tasks/bottle_cap/stationery/folder/file_7/model_file_7.usd
+  usd_path: /root/IsaacLab/TacDualDexHand/source/tacex_tasks/tacex_tasks/bottle_cap/stationery/folder/file_7/model_file_7.usd
   pos:
   - 0.5
   - -0.1
