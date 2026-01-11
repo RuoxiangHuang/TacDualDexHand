@@ -25,6 +25,6 @@ __version__ = ISAACLAB_TASKS_METADATA["package"]["version"]
 from isaaclab_tasks.utils import import_packages
 
 # The blacklist is used to prevent importing configs from sub-packages
-_BLACKLIST_PKGS = ["utils", ".mdp"]
+_BLACKLIST_PKGS = ["utils", ".mdp", "allegro_pick_up_ball", "pick_up_ball"]
 # Import all configs in this package
 import_packages(__name__, _BLACKLIST_PKGS)

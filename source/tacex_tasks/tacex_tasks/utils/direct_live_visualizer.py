@@ -67,6 +67,9 @@ class DirectLiveVisualizer(ManagerLiveVisualizer):
     #                 self._vis_window._create_debug_vis_ui_element(name, self)
 
     def create_visualizer(self):
+        # Skip visualization in headless mode (when _vis_window is None)
+        if self._vis_window is None:
+            return
         with self._vis_window.ui_window_elements["debug_frame"]:
             with self._vis_window.ui_window_elements["debug_vstack"]:
                 self._vis_window._create_debug_vis_ui_element(self.visualizer_name, self)
@@ -101,8 +104,9 @@ class DirectLiveVisualizer(ManagerLiveVisualizer):
             debug_vis: Whether to enable or disable debug visualization.
         """
 
-        if not hasattr(self, "_vis_frame"):
-            raise RuntimeError("No frame set for debug visualization.")
+        # Skip visualization in headless mode (when _vis_window or _vis_frame is None)
+        if self._vis_window is None or not hasattr(self, "_vis_frame") or self._vis_frame is None:
+            return
 
         # Clear internal visualizers
         self._term_visualizers = {}

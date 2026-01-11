@@ -231,7 +231,7 @@ class GelSightSensor(SensorBase):
                 height=self.cfg.sensor_camera_cfg.resolution[1],
                 width=self.cfg.sensor_camera_cfg.resolution[0],
                 data_types=self.cfg.sensor_camera_cfg.data_types,
-                update_latest_camera_pose=True,  # needed for FEM based marker sim
+                # update_latest_camera_pose=True,  # needed for FEM based marker sim - REMOVED: not compatible with current Isaac Lab version
                 spawn=None,  # use camera which is part of the GelSight Mini Asset
                 # note: clipping range doesn't matter for existing camera prim -> only applied when camera is spawned # TODO fix?
                 # spawn=sim_utils.PinholeCameraCfg(

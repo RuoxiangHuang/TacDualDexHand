@@ -1,0 +1,422 @@
+robot_bases:
+  left:
+    pos:
+    - 0.25
+    - -0.5
+    - 0.5
+    quat_wxyz:
+    - 1.0
+    - 6.123234262925839e-17
+    - 0.0
+    - 0.0
+    joint_pos:
+      shoulder_pan_joint: -3.318915367126465
+      shoulder_lift_joint: 0.021880263462662697
+      elbow_joint: 2.2558982372283936
+      wrist_1_joint: -6.279393196105957
+      wrist_2_joint: -0.027495205402374268
+      wrist_3_joint: -2.2312705516815186
+      WRJ2: -0.5237725377082825
+      WRJ1: -0.1968580037355423
+      FFJ4: -0.27917125821113586
+      LFJ5: 0.3791896104812622
+      MFJ4: -0.26694661378860474
+      RFJ4: -0.2247667759656906
+      THJ5: 0.11259501427412033
+      FFJ3: 1.4777777194976807
+      LFJ4: -0.34898868203163147
+      MFJ3: 1.57426118850708
+      RFJ3: 1.569524884223938
+      THJ4: 1.2095158100128174
+      FFJ2: 0.5265089869499207
+      LFJ3: 1.398835301399231
+      MFJ2: 0.8401760458946228
+      RFJ2: 1.5706144571304321
+      THJ3: 0.20419862866401672
+      FFJ1: 0.3817784786224365
+      LFJ2: -0.12189862132072449
+      MFJ1: 0.39746320247650146
+      RFJ1: 0.4115273952484131
+      THJ2: 0.6998406052589417
+      LFJ1: 1.4722206592559814
+      THJ1: -0.08516288548707962
+  right:
+    pos:
+    - 1.75
+    - -0.5
+    - 0.5
+    quat_wxyz:
+    - 1.0
+    - 6.123234262925839e-17
+    - 0.0
+    - 0.0
+    joint_pos:
+      shoulder_pan_joint: -2.0907211303710938
+      shoulder_lift_joint: -0.4720715880393982
+      elbow_joint: 2.677517890930176
+      wrist_1_joint: -1.6790136098861694
+      wrist_2_joint: 0.5162814259529114
+      wrist_3_joint: -0.3051711916923523
+      WRJ2: -0.5236018896102905
+      WRJ1: -0.19948573410511017
+      FFJ4: -0.3488692045211792
+      LFJ5: 0.32724905014038086
+      MFJ4: -0.14882883429527283
+      RFJ4: -0.18107470870018005
+      THJ5: -0.14651764929294586
+      FFJ3: 1.579936146736145
+      LFJ4: -0.34865131974220276
+      MFJ3: 1.5340131521224976
+      RFJ3: 1.5710816383361816
+      THJ4: 1.2217096090316772
+      FFJ2: 0.1272115707397461
+      LFJ3: 1.5145039558410645
+      MFJ2: 0.7458319067955017
+      RFJ2: 1.5707941055297852
+      THJ3: 0.20942102372646332
+      FFJ1: 0.4973401129245758
+      LFJ2: 0.3805147111415863
+      MFJ1: 0.3402763307094574
+      RFJ1: 0.3999333679676056
+      THJ2: 0.6524087190628052
+      LFJ1: 1.5710279941558838
+      THJ1: -0.11163415759801865
+arm_joint_presets:
+  left:
+    enabled: true
+    joints_6:
+    - 0.0
+    - -1.2
+    - 2.0
+    - -0.8
+    - 0.0
+    - 0.0
+  right:
+    enabled: true
+    joints_6:
+    - -3.1415926
+    - -1.2
+    - 2.0
+    - -0.8
+    - 0.0
+    - 0.0
+end_objects:
+  left:
+    prim_path: /End_Left
+    pos_w:
+    - 0.5
+    - 0.0
+    - 0.30000001192092896
+    quat_wxyz:
+    - -6.123234262925839e-17
+    - 4.329780301713277e-17
+    - 0.7071067690849304
+    - 0.7071067690849304
+  right:
+    prim_path: /End_Right
+    pos_w:
+    - 1.5
+    - 0.0
+    - 0.30000001192092896
+    quat_wxyz:
+    - -6.123234262925839e-17
+    - 4.329780301713277e-17
+    - 0.7071067690849304
+    - 0.7071067690849304
+end_effector_offset:
+  left:
+    pos:
+    - 0.0
+    - 0.0
+    - 0.0
+    quat_wxyz:
+    - 1.0
+    - 0.0
+    - 0.0
+    - 0.0
+  right:
+    pos:
+    - 0.0
+    - 0.0
+    - 0.0
+    quat_wxyz:
+    - 1.0
+    - 0.0
+    - 0.0
+    - 0.0
+tactile_sensors:
+  defaults:
+    camera_resolution:
+    - 32
+    - 32
+    clipping_range:
+    - 0.024
+    - 0.034
+    gelpad_to_camera_min_distance: 0.024
+    tactile_img_resolution:
+    - 32
+    - 32
+    camera_pose_local:
+      enabled: false
+      pos:
+      - 0.0
+      - 0.0
+      - 0.0
+      quat_wxyz:
+      - 1.0
+      - 0.0
+      - 0.0
+      - 0.0
+  sensors:
+    ff_left:
+      camera_resolution:
+      - 32
+      - 32
+      clipping_range:
+      - 0.024
+      - 0.034
+      gelpad_to_camera_min_distance: 0.024
+      tactile_img_resolution:
+      - 32
+      - 32
+    mf_left:
+      camera_resolution:
+      - 32
+      - 32
+      clipping_range:
+      - 0.024
+      - 0.034
+      gelpad_to_camera_min_distance: 0.024
+      tactile_img_resolution:
+      - 32
+      - 32
+    rf_left:
+      camera_resolution:
+      - 32
+      - 32
+      clipping_range:
+      - 0.024
+      - 0.034
+      gelpad_to_camera_min_distance: 0.024
+      tactile_img_resolution:
+      - 32
+      - 32
+    lf_left:
+      camera_resolution:
+      - 32
+      - 32
+      clipping_range:
+      - 0.024
+      - 0.034
+      gelpad_to_camera_min_distance: 0.024
+      tactile_img_resolution:
+      - 32
+      - 32
+    th_left:
+      camera_resolution:
+      - 32
+      - 32
+      clipping_range:
+      - 0.024
+      - 0.034
+      gelpad_to_camera_min_distance: 0.024
+      tactile_img_resolution:
+      - 32
+      - 32
+    ff_right:
+      camera_resolution:
+      - 32
+      - 32
+      clipping_range:
+      - 0.024
+      - 0.034
+      gelpad_to_camera_min_distance: 0.024
+      tactile_img_resolution:
+      - 32
+      - 32
+    mf_right:
+      camera_resolution:
+      - 32
+      - 32
+      clipping_range:
+      - 0.024
+      - 0.034
+      gelpad_to_camera_min_distance: 0.024
+      tactile_img_resolution:
+      - 32
+      - 32
+    rf_right:
+      camera_resolution:
+      - 32
+      - 32
+      clipping_range:
+      - 0.024
+      - 0.034
+      gelpad_to_camera_min_distance: 0.024
+      tactile_img_resolution:
+      - 32
+      - 32
+    lf_right:
+      camera_resolution:
+      - 32
+      - 32
+      clipping_range:
+      - 0.024
+      - 0.034
+      gelpad_to_camera_min_distance: 0.024
+      tactile_img_resolution:
+      - 32
+      - 32
+    th_right:
+      camera_resolution:
+      - 32
+      - 32
+      clipping_range:
+      - 0.024
+      - 0.034
+      gelpad_to_camera_min_distance: 0.024
+      tactile_img_resolution:
+      - 32
+      - 32
+env_camera:
+  viewer:
+    eye:
+    - 1.5
+    - 1.0
+    - 0.5
+    lookat:
+    - 0.2
+    - 0.0
+    - 0.1
+  arm_camera:
+    pos:
+    - 1.04358
+    - 0.43
+    - 0.47413
+    quat_wxyz:
+    - 0.3946
+    - 0.19595
+    - 0.42067
+    - 0.79305
+    resolution:
+    - 32
+    - 32
+    clipping_range:
+    - 0.1
+    - 2.0
+folder:
+  usd_path: /home/user/BiDexViTac/TacEx/source/tacex_tasks/tacex_tasks/bottle_cap/stationery/folder/file_7/model_file_7.usd
+  pos:
+  - 0.5
+  - -0.1
+  - 0.01
+  scale:
+  - 1.0
+  - 1.0
+  - 1.0
+  disable_fixed_joints: true
+  # 文件夹质量/密度设置（可选）
+  # 如果都设置为null，则使用USD文件中的原始质量/密度
+  # folder_mass_density: 500  # [kg/m³] 密度（推荐使用，会根据体积自动计算质量）
+  # folder_mass: null  # [kg] 直接设置质量（如果设置，会覆盖density）
+  folder_mass_density: 1000
+  folder_mass: null
+  # 文件夹关节配置
+  folder_joint_name: RevoluteJoint_file_7_up  # 旋转关节名称
+  set_folder_joint_limits_in_usd: true  # 是否设置关节限制
+  folder_joint_min_angle: 0.0  # [度] 旋转关节下限（代码会自动转换为弧度）
+  folder_joint_max_angle: 90.0  # [度] 旋转关节上限（代码会自动转换为弧度）
+  folder_joint_initial_angle: null  # [度] 关节初始角度（重置时的初始状态，代码会自动转换为弧度，null表示使用USD默认值）
+  # 关节驱动属性（用于平衡GUI拖动能力和重力抵抗能力）
+  # 值越大，越能抵抗重力，但GUI拖动可能越困难
+  # 建议范围：stiffness: 1000-10000, damping: 100-1000
+  folder_joint_drive_stiffness: 0  # 驱动刚度
+  folder_joint_drive_damping: 10  # 驱动阻尼
+finger_poses:
+  initial: closed
+  closed:
+    joint_pos:
+      WRJ2: -0.5236
+      WRJ1: -0.1981
+      FFJ4: -0.3491
+      LFJ5: 0.4854
+      MFJ4: -0.2009
+      RFJ4: -0.1491
+      THJ5: -0.1472
+      FFJ3: 1.5708
+      LFJ4: -0.3491
+      MFJ3: 1.5708
+      RFJ3: 1.5708
+      THJ4: 1.2217
+      FFJ2: 0.6
+      LFJ3: 1.5708
+      MFJ2: 0.8
+      RFJ2: 1.5708
+      THJ3: 0.2094
+      FFJ1: 0.4
+      LFJ2: 0.2
+      MFJ1: 0.35
+      RFJ1: 0.4
+      THJ2: 0.6519
+      LFJ1: 1.5708
+      THJ1: -0.1118
+    per_arm:
+      left:
+        WRJ2: -0.5235999822616577
+        WRJ1: -0.1981000006198883
+        FFJ4: -0.3490999937057495
+        LFJ5: 0.48539999127388
+        MFJ4: -0.20090000331401825
+        RFJ4: -0.14910000562667847
+        THJ5: -0.14720000326633453
+        FFJ3: 1.5707999467849731
+        LFJ4: -0.3490999937057495
+        MFJ3: 1.5707999467849731
+        RFJ3: 1.5707999467849731
+        THJ4: 1.2216999530792236
+        FFJ2: 0.6000000238418579
+        LFJ3: 1.5707999467849731
+        MFJ2: 0.800000011920929
+        RFJ2: 1.5707999467849731
+        THJ3: 0.2093999981880188
+        FFJ1: 0.4000000059604645
+        LFJ2: 0.20000000298023224
+        MFJ1: 0.3499999940395355
+        RFJ1: 0.4000000059604645
+        THJ2: 0.6518999934196472
+        LFJ1: 1.5707999467849731
+        THJ1: -0.11180000007152557
+      right:
+        WRJ2: -0.5235999822616577
+        WRJ1: -0.1981000006198883
+        FFJ4: -0.3490999937057495
+        LFJ5: 0.48539999127388
+        MFJ4: -0.20090000331401825
+        RFJ4: -0.14910000562667847
+        THJ5: -0.14720000326633453
+        FFJ3: 1.5707999467849731
+        LFJ4: -0.3490999937057495
+        MFJ3: 1.5707999467849731
+        RFJ3: 1.5707999467849731
+        THJ4: 1.2216999530792236
+        FFJ2: 0.6000000238418579
+        LFJ3: 1.5707999467849731
+        MFJ2: 0.800000011920929
+        RFJ2: 1.5707999467849731
+        THJ3: 0.2093999981880188
+        FFJ1: 0.4000000059604645
+        LFJ2: 0.20000000298023224
+        MFJ1: 0.3499999940395355
+        RFJ1: 0.4000000059604645
+        THJ2: 0.6518999934196472
+        LFJ1: 1.5707999467849731
+        THJ1: -0.11180000007152557
+  open:
+    mode: lower_limits
+    joint_pos: {}
+    per_arm:
+      left: {}
+      right: {}
+ik_controller:
+  overrides: {}
+

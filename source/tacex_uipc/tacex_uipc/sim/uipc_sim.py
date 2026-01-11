@@ -237,6 +237,12 @@ class UipcSim:
             geo_slot = uipc_obj.geo_slot_list[0]
             geo = geo_slot.geometry()
             gvo = geo.meta().find(builtin.global_vertex_offset)
+            if gvo is None:
+                raise RuntimeError(
+                    f"Failed to find global_vertex_offset for object {uipc_obj.cfg.prim_path}. "
+                    "This usually indicates that the UIPC world validation failed (e.g., objects too close to ground). "
+                    "Check the UIPC error messages above for details."
+                )
             global_vertex_offset = int(gvo.view()[0])
             self._system_vertex_offsets["uipc::backend::cuda::GlobalVertexManager"].append(global_vertex_offset)
 

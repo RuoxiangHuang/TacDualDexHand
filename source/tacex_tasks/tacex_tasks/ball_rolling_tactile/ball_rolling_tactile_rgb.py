@@ -53,7 +53,7 @@ from tacex_assets.sensors.gelsight_mini.gsmini_cfg import GelSightMiniCfg
 
 from tacex_tasks.utils import DirectLiveVisualizer
 
-#  from isaaclab.controllers.differential_ik_cfg import DifferentialIKControllerCfg
+# from isaaclab.controllers.differential_ik_cfg import DifferentialIKControllerCfg
 # from isaaclab.envs.mdp.actions.actions_cfg import DifferentialInverseKinematicsActionCfg
 
 
@@ -190,6 +190,7 @@ class BallRollingTactileRGBCfg(DirectRLEnvCfg):
             # bounce_threshold_velocity=10000,
             gpu_max_rigid_contact_count=2**23,
         ),
+        #1.
         physics_material=sim_utils.RigidBodyMaterialCfg(
             friction_combine_mode="multiply",
             restitution_combine_mode="multiply",
@@ -525,7 +526,8 @@ class BallRollingTactileRGBEnv(DirectRLEnv):
         # for the curr. level conditions
         self._total_episode_rew = torch.zeros(self.num_envs, device=self.device)
 
-        if self.cfg.debug_vis:
+        # Only create visualizers if debug_vis is enabled and window exists (not headless)
+        if self.cfg.debug_vis and self._window is not None:
             # add plots
             self.visualizers = {
                 "Actions": DirectLiveVisualizer(
@@ -879,7 +881,7 @@ class BallRollingTactileRGBEnv(DirectRLEnv):
             self.curriculum_levels["joint_vel_penalty"]
         ]
 
-        if self.cfg.debug_vis:
+        if self.cfg.debug_vis and hasattr(self, "visualizers"):
             self.visualizers["Rewards"].terms["rewards"][:, 0] = at_obj_reward
             self.visualizers["Rewards"].terms["rewards"][:, 1] = off_the_ground_penalty
             self.visualizers["Rewards"].terms["rewards"][:, 2] = height_reward
@@ -938,7 +940,7 @@ class BallRollingTactileRGBEnv(DirectRLEnv):
         #     )
 
         # self.visualizers["Actions"].terms["actions"][:] = self.actions[:]
-        if self.cfg.debug_vis:
+        if self.cfg.debug_vis and hasattr(self, "visualizers"):
             self.visualizers["Observations"].terms["ee_pos"] = ee_pos_curr_b
             self.visualizers["Observations"].terms["ee_rot"][:, :1] = x
             self.visualizers["Observations"].terms["ee_rot"][:, 1:2] = y

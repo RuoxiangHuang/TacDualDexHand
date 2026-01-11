@@ -69,4 +69,23 @@ ALLEGRO_HAND_GSMINI_CFG = ArticulationCfg(
     },
     soft_joint_pos_limit_factor=1.0,
 )
-"""Configuration of Allegro Hand robot."""
+"""Configuration of Allegro Hand robot with PhysX rigid-body GelSight Minis."""
+
+
+# UIPC-based gelpad simulation configuration
+# ------------------------------------------
+#
+# To use this configuration you need a matching USD file where the gelpads are
+# prepared for UIPC simulation (no rigid body API on the gelpads, tet mesh and
+# attachment data computed via the TacEx UIPC UI extension).
+#
+# Follow the steps in:
+#   `docs/source/tutorials/creating_robot_asset_with_sensors.md`
+# and save your new asset next to the existing one, e.g.:
+#   `source/tacex_assets/tacex_assets/data/Robots/allegro_hand_gsmini_uipc.usd`
+#
+ALLEGRO_HAND_GSMINI_UIPC_CFG = ALLEGRO_HAND_GSMINI_CFG.copy()
+ALLEGRO_HAND_GSMINI_UIPC_CFG.spawn.usd_path = (
+    f"{TACEX_ASSETS_DATA_DIR}/Robots/allegro_hand_gsmini_uipc.usd"
+)
+"""Configuration of Allegro Hand robot with UIPC-simulated GelSight Minis."""

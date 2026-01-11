@@ -5,6 +5,12 @@ import toml
 
 from isaaclab_tasks.utils import import_packages
 
+from .ur10e_shadowhand.ur10e_shadowhand_gelsighthand import (
+    UR10E_SHADOWHAND_LEFT_GELSIGHTHAND_RIGID_CFG,
+    UR10E_SHADOWHAND_RIGHT_GELSIGHTHAND_RIGID_CFG,
+    UR10E_SHADOWHAND_GELSIGHTHAND_RIGID_CFG,
+)
+
 ##
 # Register Gym environments.
 ##

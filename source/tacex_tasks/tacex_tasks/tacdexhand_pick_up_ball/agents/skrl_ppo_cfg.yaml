@@ -1,0 +1,91 @@
+seed: 42
+
+models:
+  separate: False
+  policy:
+    class: GaussianMixin
+    clip_actions: False
+    clip_log_std: True
+    min_log_std: -20.0
+    max_log_std: 2.0
+    initial_log_std: 0.0
+    network:
+      - name: features_extractor
+        input: permute(STATES["vision_obs"], (0, 3, 1, 2))
+        layers:
+          # Input: (batch, 18, 32, 32) - 5 tactile sensors (15 channels) + RGB (3 channels)
+          - conv2d: {out_channels: 32, kernel_size: 4, stride: 2, padding: 0}
+          - conv2d: {out_channels: 64, kernel_size: 3, stride: 1, padding: 0}
+          - conv2d: {out_channels: 32, kernel_size: 3, stride: 1, padding: 0}
+          - flatten
+        activations: relu
+      - name: net
+        input: concatenate([features_extractor, STATES["proprio_obs"]])
+        layers: [512, 256, 128]
+        activations: elu
+    output: ACTIONS
+  value:
+    class: DeterministicMixin
+    clip_actions: False
+    network:
+      - name: features_extractor
+        input: permute(STATES["vision_obs"], (0, 3, 1, 2))
+        layers:
+          # Input: (batch, 18, 32, 32) - 5 tactile sensors (15 channels) + RGB (3 channels)
+          - conv2d: {out_channels: 32, kernel_size: 4, stride: 2, padding: 0}
+          - conv2d: {out_channels: 64, kernel_size: 3, stride: 1, padding: 0}
+          - conv2d: {out_channels: 32, kernel_size: 3, stride: 1, padding: 0}
+          - flatten
+        activations: relu
+      - name: net
+        input: concatenate([features_extractor, STATES["proprio_obs"]])
+        layers: [512, 256, 128]
+        activations: elu
+    output: ONE
+
+memory:
+  class: RandomMemory
+  memory_size: -1
+
+agent:
+  class: PPO
+  rollouts: 64
+  learning_epochs: 4
+  mini_batches: 64
+  discount_factor: 0.99
+  lambda: 0.95
+  learning_rate: 1.0e-04
+  learning_rate_scheduler: KLAdaptiveLR
+  learning_rate_scheduler_kwargs:
+    kl_threshold: 0.008
+  state_preprocessor: null
+  state_preprocessor_kwargs: null
+  value_preprocessor: RunningStandardScaler
+  value_preprocessor_kwargs: null
+  random_timesteps: 0
+  learning_starts: 0
+  grad_norm_clip: 1.0
+  ratio_clip: 0.2
+  value_clip: 0.2
+  clip_predicted_values: True
+  entropy_loss_scale: 0.0
+  value_loss_scale: 1.0
+  kl_threshold: 0.0
+  rewards_shaper_scale: 1.0
+  time_limit_bootstrap: False
+  experiment:
+    directory: "tacdexhand_pick_up_ball"
+    experiment_name: "ppo_5fingers_tactile"
+    write_interval: 1000
+    checkpoint_interval: 10000
+    wandb: False
+    wandb_kwargs: {
+      "sync_tensorboard": True,
+      "project": "tacex_tacdexhand_pick_up_ball"
+    }
+
+trainer:
+  class: SequentialTrainer
+  timesteps: 400000
+  environment_info: log
+
