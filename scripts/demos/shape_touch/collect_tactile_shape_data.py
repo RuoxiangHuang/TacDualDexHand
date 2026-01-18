@@ -390,7 +390,9 @@ class TactileDataCollectionEnv(DirectRLEnv):
         main_quat = self.main_pose[0, 3:]
         main_pose_7d = torch.cat([main_pos, main_quat], dim=0).unsqueeze(0)  # (1, 7)
         
-        target_obj.write_root_pose_to_sim(main_pose_7d, env_ids=[0])
+        # Use torch.Tensor for env_ids (Isaac Lab requirement)
+        env_ids_tensor = torch.tensor([0], dtype=torch.int32, device=self.device)
+        target_obj.write_root_pose_to_sim(main_pose_7d, env_ids=env_ids_tensor)
 
     def randomize_goal_pose(self, base_pos: np.ndarray, base_quat: np.ndarray):
         """Randomize goal pose around base position for data diversity."""
