@@ -10,9 +10,9 @@
 
 ```bash
 cd /Users/ruoxianghuang/Desktop/TacDualDexHand
-isaaclab -p scripts/demos/shape_touch/collect_tactile_shape_data.py \
+python scripts/demos/shape_touch/collect_tactile_shape_data.py \
     --auto_mode \
-    --samples_per_shape 100 \
+    --samples_per_shape 5 \
     --sample_interval 5 \
     --output_dir ./data/tactile_shapes \
     --num_envs 1
@@ -30,7 +30,7 @@ isaaclab -p scripts/demos/shape_touch/collect_tactile_shape_data.py \
 手动模式允许你通过 GUI 控制机器人，手动选择何时采集数据：
 
 ```bash
-isaaclab -p scripts/demos/shape_touch/collect_tactile_shape_data.py \
+python scripts/demos/shape_touch/collect_tactile_shape_data.py \
     --samples_per_shape 100 \
     --sample_interval 5 \
     --output_dir ./data/tactile_shapes \
@@ -48,7 +48,7 @@ isaaclab -p scripts/demos/shape_touch/collect_tactile_shape_data.py \
 使用 `--randomize_pose` 参数可以随机化末端执行器姿态，增加数据多样性：
 
 ```bash
-isaaclab -p scripts/demos/shape_touch/collect_tactile_shape_data.py \
+python  scripts/demos/shape_touch/collect_tactile_shape_data.py \
     --auto_mode \
     --randomize_pose \
     --samples_per_shape 200 \
@@ -59,7 +59,7 @@ isaaclab -p scripts/demos/shape_touch/collect_tactile_shape_data.py \
 ## 完整参数列表
 
 ```bash
-isaaclab -p scripts/demos/shape_touch/collect_tactile_shape_data.py \
+python  scripts/demos/shape_touch/collect_tactile_shape_data.py \
     --num_envs 1 \                    # 并行环境数量
     --output_dir ./data/tactile_shapes \  # 输出目录
     --samples_per_shape 100 \         # 每个形状的样本数
