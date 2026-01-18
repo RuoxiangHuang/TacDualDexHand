@@ -565,10 +565,12 @@ def collect_all_shapes_data(
         chunks=(1000,),
         dtype=np.int64
     )
+    # Convert string list to fixed-length string array (avoids object_codec requirement)
+    shape_names_array = np.array(shape_names, dtype='U50')  # U50: max 50 chars per name
     root.create_dataset(
         'shape_names',
-        data=shape_names,
-        dtype=object
+        data=shape_names_array,
+        chunks=(len(shape_names),)
     )
     
     # Metadata

@@ -139,7 +139,7 @@ print(f"图像形状: {root.attrs['image_shape']}")
 # 查看数据
 tactile_images = root['tactile_images'][:]
 labels = root['labels'][:]
-shape_names = root['shape_names'][:]
+shape_names = root['shape_names'][:].tolist()  # Convert to list
 
 print(f"\n触觉图像形状: {tactile_images.shape}")
 print(f"标签形状: {labels.shape}")
