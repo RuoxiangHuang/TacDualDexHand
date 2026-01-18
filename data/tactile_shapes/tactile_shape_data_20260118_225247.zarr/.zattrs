@@ -1,0 +1,11 @@
+{
+    "collection_date": "2026-01-18T22:55:28.537160",
+    "image_shape": [
+        240,
+        320,
+        3
+    ],
+    "num_samples": 420,
+    "num_shapes": 21,
+    "samples_per_shape": 20
+}
