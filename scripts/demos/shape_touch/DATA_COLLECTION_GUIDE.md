@@ -2,6 +2,22 @@
 
 本指南说明如何使用 `collect_tactile_shape_data.py` 脚本收集触觉数据用于训练分类器。
 
+## ⚠️ 重要修复说明 (2026-01-18)
+
+**修复了传感器未接触物体的关键问题！**
+
+之前版本的脚本存在严重问题：
+- ❌ 传感器悬停在物体上方，从未真正接触
+- ❌ 所有形状的触觉图像完全相同（非接触状态）
+- ❌ Z轴偏移强制为正值，导致向上移动
+
+已修复：
+- ✅ Z轴偏移改为**负值（-3mm到-8mm）**，确保向下接触
+- ✅ 添加小角度旋转随机化（±5度），增加接触多样性
+- ✅ 即使不启用 `--randomize_pose`，也会向下移动5mm确保接触
+
+**重要：请使用修复后的脚本重新收集数据！**
+
 ## 快速开始
 
 ### 1. 自动模式（推荐）
@@ -43,9 +59,9 @@ python scripts/demos/shape_touch/collect_tactile_shape_data.py \
 - 按 `n` 切换到下一个形状
 - 按 `q` 退出并保存数据
 
-### 3. 增加数据多样性
+### 3. 增加数据多样性（强烈推荐）
 
-使用 `--randomize_pose` 参数可以随机化末端执行器姿态，增加数据多样性：
+使用 `--randomize_pose` 参数可以随机化末端执行器姿态和接触深度，增加数据多样性：
 
 ```bash
 python  scripts/demos/shape_touch/collect_tactile_shape_data.py \
@@ -146,6 +162,48 @@ print(f"标签形状: {labels.shape}")
 print(f"形状名称: {shape_names}")
 print(f"标签分布: {np.bincount(labels)}")
 ```
+
+## 验证数据质量
+
+### 使用验证脚本
+
+运行验证脚本检查数据完整性并生成可视化：
+
+```bash
+cd /Users/ruoxianghuang/Desktop/TacDualDexHand
+conda activate env_isaaclab
+python data/validate_dataset.py \
+    --dataset data/tactile_shapes/YOUR_DATASET.zarr \
+    --output_dir data/tactile_shapes/visualizations
+```
+
+### 检查触觉图像质量
+
+**正确的触觉数据特征：**
+- ✅ 不同形状应有**明显不同**的触觉图像
+- ✅ 球形 → 圆形接触区域，中心深色
+- ✅ 立方体 → 方形/矩形接触轮廓
+- ✅ 三角形 → 三角形压痕模式
+- ✅ 线条 → 线性变形区域
+- ✅ 点 → 局部小圆形压痕
+
+**错误的触觉数据特征：**
+- ❌ 所有形状图像完全相同
+- ❌ 只有粉红-青色渐变，无明显轮廓
+- ❌ 看起来像传感器初始状态
+- ❌ **说明传感器未真正接触物体！**
+
+如果看到错误特征，请：
+1. 确保使用**修复后的最新版本**脚本
+2. 务必添加 `--randomize_pose` 参数
+3. 在 Isaac Sim GUI 中观察传感器是否真的压入物体表面
+
+### 查看可视化结果
+
+验证脚本会生成 `dataset_visualization.png`，显示每个类别的代表性触觉图像。检查：
+- 类间差异是否明显
+- 图像是否包含形状特征
+- 是否有明显的接触变形模式
 
 ## 故障排除
 

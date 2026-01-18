@@ -213,6 +213,8 @@ class TactileDataCollectionEnvCfg(DirectRLEnvCfg):
 
     ik_controller_cfg = DifferentialIKControllerCfg(command_type="pose", use_relative_mode=False, ik_method="dls")
 
+    # Main pose: object position on ground (Z=0.02m for object center)
+    # End-effector will move DOWN from this position to contact
     main_pose = [0.5, 0.0, 0.02, 1, 0, 0, 0]
 
     episode_length_s = 0
@@ -396,15 +398,30 @@ class TactileDataCollectionEnv(DirectRLEnv):
     def randomize_goal_pose(self, base_pos: np.ndarray, base_quat: np.ndarray):
         """Randomize goal pose around base position for data diversity."""
         if not args_cli.randomize_pose:
-            return base_pos, base_quat
+            # Even without randomization, move DOWN to contact the object
+            contact_pos = base_pos.copy()
+            contact_pos[2] -= 0.005  # Move 5mm down to ensure contact
+            return contact_pos, base_quat
         
-        # Add small random offset
-        pos_offset = np.random.uniform(-0.02, 0.02, size=3)
-        pos_offset[2] = abs(pos_offset[2])  # Keep Z positive
+        # Add small random offset for XY plane
+        xy_offset = np.random.uniform(-0.015, 0.015, size=2)
+        
+        # Z offset should be DOWNWARD to contact the object surface
+        # Random contact depth: -3mm to -8mm (negative = downward, ensuring contact)
+        z_offset = np.random.uniform(-0.008, -0.003)
+        
+        pos_offset = np.array([xy_offset[0], xy_offset[1], z_offset])
         randomized_pos = base_pos + pos_offset
         
-        # Keep original quaternion (rotation randomization can be added later if needed)
-        randomized_quat = base_quat.copy()
+        # Add small rotation randomization for diverse contact angles
+        angle_variation = np.random.uniform(-0.1, 0.1, size=3)  # ~5 degrees
+        from scipy.spatial.transform import Rotation as R
+        base_rot = R.from_quat([base_quat[1], base_quat[2], base_quat[3], base_quat[0]])  # xyzw
+        delta_rot = R.from_euler('xyz', angle_variation)
+        randomized_rot = delta_rot * base_rot
+        randomized_quat_xyzw = randomized_rot.as_quat()
+        randomized_quat = np.array([randomized_quat_xyzw[3], randomized_quat_xyzw[0], 
+                                     randomized_quat_xyzw[1], randomized_quat_xyzw[2]])  # wxyz
         
         return randomized_pos, randomized_quat
 
