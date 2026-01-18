@@ -214,8 +214,11 @@ class TactileDataCollectionEnvCfg(DirectRLEnvCfg):
     ik_controller_cfg = DifferentialIKControllerCfg(command_type="pose", use_relative_mode=False, ik_method="dls")
 
     # Main pose: object position on ground (Z=0.02m for object center)
-    # End-effector will move DOWN from this position to contact
     main_pose = [0.5, 0.0, 0.02, 1, 0, 0, 0]
+    
+    # End-effector starting position (above the object for touching)
+    # Objects are ~3-4cm tall, so EE should start higher
+    ee_start_height = 0.08  # 8cm above ground, well above object surface
 
     episode_length_s = 0
     action_space = 0
@@ -291,10 +294,12 @@ class TactileDataCollectionEnv(DirectRLEnv):
             orientation=ground.init_state.rot,
         )
 
+        # Goal marker (green cube) - shows end-effector target position
+        # Start at surface contact height, not at object center
         VisualCuboid(
             prim_path="/Goal",
             size=0.01,
-            position=np.array([0.5, 0.0, 0.021]),
+            position=np.array([0.5, 0.0, 0.030]),  # At object surface height
             orientation=np.array([0, 1, 0, 0]),
             visible=True,
             color=np.array([0.0, 255.0, 0.0]),
@@ -336,8 +341,9 @@ class TactileDataCollectionEnv(DirectRLEnv):
         super()._reset_idx(env_ids)
 
         if self.goal_prim_view is not None:
-            goal_pos = self.main_pose[:, :3]
-            goal_pos[:, 2] += 0.001
+            # Reset goal to contact height (object surface), not object center
+            goal_pos = self.main_pose[:, :3].clone()
+            goal_pos[:, 2] = 0.030  # At object surface height for contact
             goal_orient = torch.tensor([[0, 1, 0, 0]], device=self.device)
             self.goal_prim_view.set_world_poses(positions=goal_pos, orientations=goal_orient)
 
@@ -396,22 +402,37 @@ class TactileDataCollectionEnv(DirectRLEnv):
         target_obj.write_root_pose_to_sim(main_pose_7d, env_ids=env_ids_tensor)
 
     def randomize_goal_pose(self, base_pos: np.ndarray, base_quat: np.ndarray):
-        """Randomize goal pose around base position for data diversity."""
+        """Randomize goal pose for touching object surface.
+        
+        Args:
+            base_pos: End-effector starting position (should be above object).
+            base_quat: Base orientation (wxyz).
+            
+        Returns:
+            Contact position and orientation for touching the object.
+        """
+        # Object center is at Z=0.02m, typical object height is 3-4cm
+        # Contact position should be at object surface, slightly pressed in
+        # Target Z range: 0.025-0.035m (object surface with 0-1cm penetration)
+        
         if not args_cli.randomize_pose:
-            # Even without randomization, move DOWN to contact the object
+            # Fixed contact position: center of object, at surface height
             contact_pos = base_pos.copy()
-            contact_pos[2] -= 0.005  # Move 5mm down to ensure contact
+            contact_pos[2] = 0.030  # 3cm height, object surface with slight contact
             return contact_pos, base_quat
         
-        # Add small random offset for XY plane
+        # Randomize XY position around object center
         xy_offset = np.random.uniform(-0.015, 0.015, size=2)
         
-        # Z offset should be DOWNWARD to contact the object surface
-        # Random contact depth: -3mm to -8mm (negative = downward, ensuring contact)
-        z_offset = np.random.uniform(-0.008, -0.003)
+        # Randomize contact depth (absolute Z coordinate, not offset)
+        # Range: 2.5-3.5cm (covers different object surface heights + penetration)
+        z_contact = np.random.uniform(0.025, 0.035)
         
-        pos_offset = np.array([xy_offset[0], xy_offset[1], z_offset])
-        randomized_pos = base_pos + pos_offset
+        randomized_pos = np.array([
+            self.main_pose[0, 0].cpu().item() + xy_offset[0],  # X: object center + offset
+            self.main_pose[0, 1].cpu().item() + xy_offset[1],  # Y: object center + offset
+            z_contact  # Z: absolute contact height
+        ])
         
         # Add small rotation randomization for diverse contact angles
         angle_variation = np.random.uniform(-0.1, 0.1, size=3)  # ~5 degrees
@@ -452,10 +473,17 @@ def collect_data_for_shape(
     env.set_target_shape(shape_name)
     env.reset()
     
-    # Move goal to initial position
-    base_pos = env.main_pose[0, :3].cpu().numpy()
-    base_quat = env.main_pose[0, 3:].cpu().numpy()
-    goal_pos, goal_quat = env.randomize_goal_pose(base_pos, base_quat)
+    # End-effector starting position: ABOVE the object, not at object center
+    # Object center is at [0.5, 0.0, 0.02], we start higher for downward approach
+    ee_start_pos = np.array([
+        env.main_pose[0, 0].cpu().item(),  # X: same as object
+        env.main_pose[0, 1].cpu().item(),  # Y: same as object
+        env.cfg.ee_start_height  # Z: above object (configured in EnvCfg)
+    ])
+    ee_start_quat = env.main_pose[0, 3:].cpu().numpy()  # wxyz orientation
+    
+    # Get contact position (will be moved down to object surface)
+    goal_pos, goal_quat = env.randomize_goal_pose(ee_start_pos, ee_start_quat)
     
     env.goal_prim_view.set_world_poses(
         positions=torch.tensor([goal_pos], device=env.device),
@@ -506,7 +534,7 @@ def collect_data_for_shape(
         
         # Randomize goal pose periodically for diversity
         if args_cli.randomize_pose and step_count - last_randomize_step > 50:
-            goal_pos, goal_quat = env.randomize_goal_pose(base_pos, base_quat)
+            goal_pos, goal_quat = env.randomize_goal_pose(ee_start_pos, ee_start_quat)
             env.goal_prim_view.set_world_poses(
                 positions=torch.tensor([goal_pos], device=env.device),
                 orientations=torch.tensor([goal_quat], device=env.device)
