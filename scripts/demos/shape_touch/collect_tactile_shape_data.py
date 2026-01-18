@@ -45,7 +45,6 @@ import torch
 import zarr
 
 import carb
-import pynvml
 from isaacsim.core.api.objects import VisualCuboid
 from isaacsim.core.prims import XFormPrim
 
@@ -640,7 +639,6 @@ def run_simulator(env: TactileDataCollectionEnv):
             step_count += 1
     
     env.close()
-    pynvml.nvmlShutdown()
 
 
 def main():
